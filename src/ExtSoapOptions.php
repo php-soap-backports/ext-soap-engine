@@ -13,9 +13,9 @@ use Soap\ExtSoapEngine\Wsdl\WsdlProvider;
 
 final class ExtSoapOptions
 {
-    private string $wsdl;
-    private array $options;
-    private WsdlProvider $wsdlProvider;
+    private $wsdl;
+    private $options;
+    private $wsdlProvider;
 
     public function __construct(string $wsdl, array $options = [])
     {
@@ -111,7 +111,7 @@ final class ExtSoapOptions
      * @param T $default
      * @return T
      */
-    private function fetchOptionOfTypeWithDefault(string $key, string $type, mixed $default): mixed
+    private function fetchOptionOfTypeWithDefault(string $key, string $type, $default)
     {
         $this->options[$key] = $this->options[$key] ?? $default;
 
