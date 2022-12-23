@@ -9,7 +9,7 @@ use Soap\Engine\HttpBinding\SoapRequest;
 
 final class ExtSoapEncoder implements Encoder
 {
-    private AbusedClient $client;
+    private $client;
 
     public function __construct(AbusedClient $client)
     {
