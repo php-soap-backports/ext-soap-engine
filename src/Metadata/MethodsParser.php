@@ -14,7 +14,7 @@ use SoapClient;
 
 final class MethodsParser
 {
-    private XsdTypeCollection $xsdTypes;
+    private $xsdTypes;
 
     public function __construct(XsdTypeCollection $xsdTypes)
     {
@@ -24,7 +24,9 @@ final class MethodsParser
     public function parse(SoapClient $client): MethodCollection
     {
         return new MethodCollection(...array_map(
-            fn (string $methodString) => $this->parseMethodFromString($methodString),
+            function (string $methodString) {
+                return $this->parseMethodFromString($methodString);
+            },
             array_values((array)$client->__getFunctions())
         ));
     }

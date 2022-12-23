@@ -17,7 +17,7 @@ final class XsdTypesParser
     /**
      * @var XsdTypeVisitorInterface[]
      */
-    private array $visitors;
+    private $visitors;
 
     public function __construct(XsdTypeVisitorInterface ...$visitors)
     {
