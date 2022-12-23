@@ -11,7 +11,7 @@ final class TypeConverterCollection implements IteratorAggregate
     /**
      * @var array<TypeConverterInterface>
      */
-    private array $converters = [];
+    private $converters = [];
 
     /**
      * Construct type converter collection
