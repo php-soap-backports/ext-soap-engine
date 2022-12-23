@@ -15,10 +15,10 @@ use Soap\ExtSoapEngine\Generator\DummyMethodArgumentsGenerator;
 
 final class ExtSoapDriver implements Driver
 {
-    private AbusedClient $client;
-    private Encoder $encoder;
-    private Decoder $decoder;
-    private Metadata $metadata;
+    private $client;
+    private $encoder;
+    private $decoder;
+    private $metadata;
 
     public function __construct(
         AbusedClient $client,
