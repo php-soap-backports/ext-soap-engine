@@ -8,9 +8,9 @@ use Soap\ExtSoapEngine\Configuration\ClassMap\ClassMap;
 use Soap\ExtSoapEngine\Configuration\ClassMap\ClassMapCollection;
 use Soap\ExtSoapEngine\Configuration\TypeConverter\TypeConverterCollection;
 use Soap\ExtSoapEngine\Configuration\TypeConverter\TypeConverterInterface;
+use Stringable;
 use Symfony\Component\OptionsResolver\Options;
 use Symfony\Component\OptionsResolver\OptionsResolver;
-use function Psl\Type\non_empty_string;
 
 final class ExtSoapOptionsResolverFactory
 {
@@ -89,7 +89,7 @@ final class ExtSoapOptionsResolverFactory
         // Classmaps
         $resolver->setDefault('classmap', new ClassMapCollection());
         $resolver->setAllowedTypes('classmap', [ClassMapCollection::class, 'array']);
-        $resolver->setNormalizer('classmap', static function (Options $options, mixed $value): array {
+        $resolver->setNormalizer('classmap', static function (Options $options, $value): array {
             // Classic array configuration:
             if (!$value instanceof ClassMapCollection) {
                 return $value;
@@ -118,7 +118,7 @@ final class ExtSoapOptionsResolverFactory
 
         $resolver->setDefined(['typemap']);
         $resolver->setAllowedTypes('typemap', ['array', TypeConverterCollection::class]);
-        $resolver->setNormalizer('typemap', static function (Options $options, mixed $value): array {
+        $resolver->setNormalizer('typemap', static function (Options $options, $value): array {
             // Classic array configuration:
             if (!$value instanceof TypeConverterCollection) {
                 return $value;
@@ -129,10 +129,34 @@ final class ExtSoapOptionsResolverFactory
                     return [
                         'type_name' => $converter->getTypeName(),
                         'type_ns' => $converter->getTypeNamespace(),
-                        'from_xml' => static fn (string $input): mixed => $converter->convertXmlToPhp(
-                            non_empty_string()->coerce($input)
-                        ),
-                        'to_xml' => static fn (mixed $input): string => $converter->convertPhpToXml($input),
+                        'from_xml' => static function ($input) use ($converter) {
+                            $value = '';
+
+                            if ('' !== $input && is_string($input)) {
+                                $value = $input;
+                            }
+
+                            if (is_int($input)) {
+                                $value = (string)$input;
+                            }
+
+                            if ($input instanceof Stringable) {
+                                $str = (string)$input;
+                                if ('' !== $str) {
+                                    $value = $str;
+                                }
+                            }
+
+                            if ('' === $value) {
+                                throw new \Exception(sprintf('Could not set "%s" as type string.',
+                                    get_debug_type($value)));
+                            }
+
+                            return $converter->convertXmlToPhp($value);
+                        },
+                        'to_xml' => static function ($input) use ($converter): string {
+                            return $converter->convertPhpToXml($input);
+                        },
                     ];
                 },
                 iterator_to_array($value)
