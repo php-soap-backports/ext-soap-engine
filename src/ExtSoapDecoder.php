@@ -10,8 +10,8 @@ use Soap\ExtSoapEngine\Generator\DummyMethodArgumentsGenerator;
 
 final class ExtSoapDecoder implements Decoder
 {
-    private AbusedClient $client;
-    private DummyMethodArgumentsGenerator $argumentsGenerator;
+    private $client;
+    private $argumentsGenerator;
 
     public function __construct(AbusedClient $client, DummyMethodArgumentsGenerator $argumentsGenerator)
     {
