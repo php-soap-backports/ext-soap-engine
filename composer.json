@@ -1,5 +1,5 @@
 {
-    "name": "php-soap/ext-soap-engine",
+    "name": "php-soap-backports/ext-soap-engine",
     "description": "An ext-soap engine implementation",
     "type": "library",
     "license": "MIT",
