@@ -4,10 +4,10 @@ namespace Soap\ExtSoapEngine\HttpBinding;
 
 final class LastRequestInfo
 {
-    private string $lastRequestHeaders;
-    private string $lastRequest;
-    private string $lastResponseHeaders;
-    private string $lastResponse;
+    private $lastRequestHeaders;
+    private $lastRequest;
+    private $lastResponseHeaders;
+    private $lastResponse;
 
     public function __construct(
         string $lastRequestHeaders,
