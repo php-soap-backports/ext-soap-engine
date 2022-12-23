@@ -12,8 +12,8 @@ use SoapClient;
 
 final class AbusedClient extends SoapClient
 {
-    private ?SoapRequest $storedRequest = null;
-    private ?SoapResponse $storedResponse = null;
+    private $storedRequest = null;
+    private $storedResponse = null;
 
     // @codingStandardsIgnoreStart
     /**
@@ -64,9 +64,16 @@ final class AbusedClient extends SoapClient
         bool $oneWay = false
     ): string {
         $this->__last_request = $request;
+
+        if (\PHP_VERSION_ID < 80000) {
+            $oneWay = (int)$oneWay;
+        }
+
         $this->__last_response = (string) ExtSoapErrorHandler::handleNullResponse(
             ExtSoapErrorHandler::handleInternalErrors(
-                fn (): ?string => parent::__doRequest($request, $location, $action, $version, $oneWay)
+                function() use ($request, $location, $action, $version, $oneWay): ?string {
+                    return parent::__doRequest($request, $location, $action, $version, $oneWay);
+                }
             )
         );
 
