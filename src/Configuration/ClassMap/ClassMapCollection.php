@@ -10,7 +10,7 @@ final class ClassMapCollection implements IteratorAggregate
     /**
      * @var array<string, ClassMapInterface>
      */
-    private array $classMaps = [];
+    private $classMaps = [];
 
     public function __construct(ClassMapInterface ... $classMaps)
     {

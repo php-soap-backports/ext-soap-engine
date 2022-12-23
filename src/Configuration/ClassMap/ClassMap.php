@@ -4,8 +4,8 @@ namespace Soap\ExtSoapEngine\Configuration\ClassMap;
 
 final class ClassMap implements ClassMapInterface
 {
-    private string $wsdlType;
-    private string $phpClassName;
+    private $wsdlType;
+    private $phpClassName;
 
     public function __construct(string $wsdlType, string $phpClassName)
     {
