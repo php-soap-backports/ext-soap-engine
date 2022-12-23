@@ -24,7 +24,7 @@
         }
     ],
     "require": {
-        "php": "~8.1.0 || ~8.2.0",
+        "php": ">=7.1",
         "ext-soap": "*",
         "ext-dom": "*",
         "php-soap-backports/engine": "^1.3",
