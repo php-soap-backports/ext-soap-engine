@@ -9,7 +9,7 @@ use Soap\ExtSoapEngine\AbusedClient;
 
 final class ExtSoapClientTransport implements Transport
 {
-    private AbusedClient $client;
+    private $client;
 
     public function __construct(AbusedClient $client)
     {

@@ -12,9 +12,9 @@ use Soap\ExtSoapEngine\HttpBinding\LastRequestInfo;
 
 final class TraceableTransport implements Transport
 {
-    private AbusedClient $client;
-    private Transport $transport;
-    private LastRequestInfo $lastRequestInfo;
+    private $client;
+    private $transport;
+    private $lastRequestInfo;
 
     public function __construct(AbusedClient $client, Transport $transport)
     {

@@ -9,7 +9,7 @@ use SoapServer;
 
 final class ExtSoapServerTransport implements Transport
 {
-    private SoapServer $server;
+    private $server;
 
     public function __construct(SoapServer $server)
     {
