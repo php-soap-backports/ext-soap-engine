@@ -11,6 +11,6 @@ final class InMemoryWsdlProvider implements WsdlProvider
 {
     public function __invoke(string $location): string
     {
-        return 'data://text/plain;base64,'.base64_encode($location);
+        return 'data://text/plain;base64,' . base64_encode($location);
     }
 }

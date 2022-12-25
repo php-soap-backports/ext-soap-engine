@@ -7,6 +7,6 @@ final class Md5Strategy implements NamingStrategy
 {
     public function __invoke(string $location): string
     {
-        return md5($location).'.wsdl';
+        return md5($location) . '.wsdl';
     }
 }
