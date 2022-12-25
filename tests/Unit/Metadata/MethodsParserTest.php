@@ -14,7 +14,7 @@ use SoapClient;
 
 final class MethodsParserTest extends TestCase
 {
-    private MethodsParser $parser;
+    private $parser;
 
     protected function setUp(): void
     {
@@ -65,7 +65,7 @@ final class MethodsParserTest extends TestCase
                 'Test2Param',
                 new ParameterCollection(
                     new Parameter('parameter1', XsdType::create('Test1')),
-                    new Parameter('parameter2', XsdType::create('Test2')),
+                    new Parameter('parameter2', XsdType::create('Test2'))
                 ),
                 XsdType::create('TestResponse')
             ),
@@ -84,7 +84,7 @@ final class MethodsParserTest extends TestCase
                 'TestReturnListWithParams',
                 new ParameterCollection(
                     new Parameter('parameter1', XsdType::create('Test1')),
-                    new Parameter('parameter2', XsdType::create('Test2')),
+                    new Parameter('parameter2', XsdType::create('Test2'))
                 ),
                 XsdType::create('array')
             ),

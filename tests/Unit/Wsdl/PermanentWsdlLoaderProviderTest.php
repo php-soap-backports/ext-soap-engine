@@ -5,13 +5,13 @@ namespace SoapTest\ExtSoapEngine\Unit\Wsdl;
 
 use PHPUnit\Framework\TestCase;
 use Soap\ExtSoapEngine\Wsdl\PermanentWsdlLoaderProvider;
-use Soap\Wsdl\Loader\WsdlLoader;
+use Soap\ExtSoapEngine\Wsdl\Loader\WsdlLoaderInterface;
 
 final class PermanentWsdlLoaderProviderTest extends TestCase
 {
     public function test_it_can_provide_a_wsdl(): void
     {
-        $loader = $this->createConfiguredMock(WsdlLoader::class, [
+        $loader = $this->createConfiguredMock(WsdlLoaderInterface::class, [
             '__invoke' => $content = '<definitions />'
         ]);
 
@@ -30,7 +30,7 @@ final class PermanentWsdlLoaderProviderTest extends TestCase
     
     public function test_it_only_fetches_wsdl_once(): void
     {
-        $loader = $this->createConfiguredMock(WsdlLoader::class, [
+        $loader = $this->createConfiguredMock(WsdlLoaderInterface::class, [
             '__invoke' => $content = '<definitions />'
         ]);
         $loader->expects(static::once())->method('__invoke');
@@ -52,7 +52,7 @@ final class PermanentWsdlLoaderProviderTest extends TestCase
     
     public function test_it_fetches_multiple_times_for_forced_downloads(): void
     {
-        $loader = $this->createConfiguredMock(WsdlLoader::class, [
+        $loader = $this->createConfiguredMock(WsdlLoaderInterface::class, [
             '__invoke' => $content = '<definitions />'
         ]);
         $loader->expects(static::exactly(2))->method('__invoke');

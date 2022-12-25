@@ -7,7 +7,7 @@ use Soap\ExtSoapEngine\Configuration\TypeConverter\DoubleTypeConverter;
 
 final class DoubleTypeConverterTest extends TestCase
 {
-    protected DoubleTypeConverter $converter;
+    protected $converter;
 
     protected function setUp(): void
     {

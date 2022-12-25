@@ -7,7 +7,7 @@ use Soap\ExtSoapEngine\Configuration\TypeConverter\DecimalTypeConverter;
 
 final class DecimalTypeConverterTest extends TestCase
 {
-    protected DecimalTypeConverter $converter;
+    protected $converter;
 
     protected function setUp(): void
     {

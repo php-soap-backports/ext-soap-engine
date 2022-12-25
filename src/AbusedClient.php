@@ -45,13 +45,13 @@ final class AbusedClient extends SoapClient
     }
 
     public function __doRequest(
-        string $request,
-        string $location,
-        string $action,
-        int $version,
-        bool $one_way = false
+        $request,
+        $location,
+        $action,
+        $version,
+        $one_way = 0
     ): string {
-        $this->storedRequest = new SoapRequest($request, $location, $action, $version, $one_way);
+        $this->storedRequest = new SoapRequest((string) $request, (string) $location, (string) $action, (int) $version, (bool) $one_way);
 
         return $this->storedResponse ? $this->storedResponse->getPayload() : '';
     }

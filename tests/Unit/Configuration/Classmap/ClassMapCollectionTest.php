@@ -14,7 +14,7 @@ final class ClassMapCollectionTest extends TestCase
         $classMap = new ClassMapCollection(
             $item1 = new ClassMap('wsdlType', 'phpType'),
             new ClassMap('double', 'double'),
-            $item2 = new ClassMap('double', 'double'),
+            $item2 = new ClassMap('double', 'double')
         );
 
         static::assertCount(2, $classMap);

@@ -47,7 +47,7 @@ final class PermanentWsdlLoaderProvider implements WsdlProvider
                 throw new RuntimeException(sprintf('Path "%s" does not point to a file.', $file));
             }
 
-            if (!is_writable($file)) {
+            if ($exist_file && !is_writable($file)) {
                 throw new RuntimeException(sprintf('File "%s" is not writable.', $file));
             }
 

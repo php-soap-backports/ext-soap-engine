@@ -9,7 +9,7 @@ use Soap\ExtSoapEngine\Configuration\TypeConverter\DateTypeConverter;
 
 final class DateTypeConverterTest extends TestCase
 {
-    protected DateTypeConverter $converter;
+    protected $converter;
 
     protected function setUp(): void
     {

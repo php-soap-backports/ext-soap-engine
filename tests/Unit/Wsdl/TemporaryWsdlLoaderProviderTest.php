@@ -5,13 +5,13 @@ namespace SoapTest\ExtSoapEngine\Unit\Wsdl;
 
 use PHPUnit\Framework\TestCase;
 use Soap\ExtSoapEngine\Wsdl\TemporaryWsdlLoaderProvider;
-use Soap\Wsdl\Loader\WsdlLoader;
+use Soap\ExtSoapEngine\Wsdl\Loader\WsdlLoaderInterface;
 
 final class TemporaryWsdlLoaderProviderTest extends TestCase
 {
     public function test_it_can_provide_a_wsdl(): void
     {
-        $loader = $this->createConfiguredMock(WsdlLoader::class, [
+        $loader = $this->createConfiguredMock(WsdlLoaderInterface::class, [
             '__invoke' => $content = '<definitions />'
         ]);
 

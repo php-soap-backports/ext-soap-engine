@@ -10,7 +10,7 @@ use Soap\ExtSoapEngine\Configuration\TypeConverter\DateTimeTypeConverter;
 
 final class DateTimeTypeConverterTest extends TestCase
 {
-    protected DateTimeTypeConverter $converter;
+    protected $converter;
 
     protected function setUp(): void
     {
@@ -35,7 +35,7 @@ final class DateTimeTypeConverterTest extends TestCase
         $php = $this->converter->convertXmlToPhp($xml);
 
         static::assertInstanceOf(DateTimeImmutable::class, $php);
-        static::assertSame('2019-01-25T13:55:00+01:00', $php->format(DateTimeInterface::ATOM));
+        static::assertSame('2019-01-25T13:55:00+01:00', $php->format('Y-m-d\\TH:i:sP'));
 
         static::assertTrue(
             in_array($php->getTimezone()->getName(), [date('T'), date('P'), date('e')], true)

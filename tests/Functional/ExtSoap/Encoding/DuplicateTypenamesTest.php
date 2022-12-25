@@ -14,9 +14,9 @@ use SoapTest\ExtSoapEngine\Functional\ExtSoap\AbstractSoapTestCase;
 
 final class DuplicateTypenamesTest extends AbstractSoapTestCase
 {
-    private string $wsdl;
-    private ExtSoapDriver $driver;
-    private TraceableTransport $transport;
+    private $wsdl;
+    private $driver;
+    private $transport;
 
     protected function setUp(): void
     {
@@ -47,9 +47,18 @@ final class DuplicateTypenamesTest extends AbstractSoapTestCase
         $store2 = $types->getIterator()[1];
 
         static::assertEquals($store1->getName(), 'Store');
-        static::assertEquals([...$store1->getProperties()][0]->getName(), 'Attribute1');
+        $arStore1 = [];
+        foreach ($store1->getProperties() as $property){
+            $arStore1[] = $property;
+        }
+        static::assertEquals($arStore1[0]->getName(), 'Attribute1');
+
         static::assertEquals($store2->getName(), 'Store');
-        static::assertEquals([...$store2->getProperties()][0]->getName(), 'Attribute2');
+        $arStore2 = [];
+        foreach ($store2->getProperties() as $property){
+            $arStore2[] = $property;
+        }
+        static::assertEquals($arStore2[0]->getName(), 'Attribute2');
     }
 
     /**

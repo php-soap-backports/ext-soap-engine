@@ -9,7 +9,7 @@ use SoapClient;
 
 final class XsdTypesParserTest extends TestCase
 {
-    private XsdTypesParser $parser;
+    private $parser;
 
     protected function setUp(): void
     {
@@ -29,7 +29,10 @@ final class XsdTypesParserTest extends TestCase
             ],
         ]);
 
-        $result = [...$this->parser->parse($client)];
+        $result = [];
+        foreach ($this->parser->parse($client) as $xsdType){
+            $result[] = $xsdType;
+        }
 
         static::assertCount(5, $result);
         static::assertSame('unionType', $result[0]->getName());
@@ -49,7 +52,11 @@ final class XsdTypesParserTest extends TestCase
         ]);
 
         $result = $this->parser->parse($client);
-        $records = [...$result];
+        $records = [];
+
+        foreach ($result as $xsdType) {
+            $records[] = $xsdType;
+        }
 
         static::assertCount(2, $result);
         static::assertSame('simpleType', $records[0]->getName());

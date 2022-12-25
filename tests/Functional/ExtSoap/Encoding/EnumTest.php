@@ -13,9 +13,9 @@ use SoapTest\ExtSoapEngine\Functional\ExtSoap\AbstractSoapTestCase;
 
 final class EnumTest extends AbstractSoapTestCase
 {
-    private string $wsdl;
-    private ExtSoapDriver $driver;
-    private TraceableTransport $transport;
+    private $wsdl;
+    private $driver;
+    private $transport;
 
     protected function setUp(): void
     {

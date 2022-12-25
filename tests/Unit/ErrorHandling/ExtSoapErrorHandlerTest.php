@@ -26,7 +26,9 @@ final class ExtSoapErrorHandlerTest extends TestCase
     public function test_it_can_detect_no_internal_errors_during_callback(): void
     {
         $res = ExtSoapErrorHandler::handleInternalErrors(
-            static fn () => 'hello'
+            static function () {
+                return 'hello';
+            }
         );
 
         static::assertSame($res, 'hello');

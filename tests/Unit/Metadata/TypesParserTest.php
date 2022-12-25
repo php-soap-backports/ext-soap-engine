@@ -12,7 +12,7 @@ use SoapClient;
 
 final class TypesParserTest extends TestCase
 {
-    private TypesParser $parser;
+    private $parser;
 
     protected function setUp(): void
     {
@@ -31,13 +31,13 @@ final class TypesParserTest extends TestCase
                 'union unionType {string, integer}',
                 'list listType {integer}',
                 <<<EOSTRUCT
-                struct ProductLine {
-                 string Mode;
-                 string RelevanceRank;
-                 ProductInfo ProductInfo;
-                 simpleType xsdType;
-                }
-                EOSTRUCT
+struct ProductLine {
+ string Mode;
+ string RelevanceRank;
+ ProductInfo ProductInfo;
+ simpleType xsdType;
+}
+EOSTRUCT
             ],
         ]);
 
@@ -48,7 +48,12 @@ final class TypesParserTest extends TestCase
         $type = $types->fetchFirstByName('ProductLine');
         static::assertSame('ProductLine', $type->getName());
 
-        $properties = [...$type->getProperties()];
+        $properties = [];
+
+        foreach ($type->getProperties() as $property) {
+            $properties[] = $property;
+        }
+
         static::assertCount(4, $properties);
 
         static::assertEquals(
