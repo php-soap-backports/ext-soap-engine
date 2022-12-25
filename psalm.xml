@@ -1,21 +1,22 @@
 <?xml version="1.0"?>
 <psalm
-    errorLevel="2"
-    resolveFromConfigFile="true"
-    strictBinaryOperands="true"
-    phpVersion="7.1"
-    allowStringToStandInForClass="true"
-    rememberPropertyAssignmentsAfterCall="false"
-    skipChecksOnUnresolvableIncludes="false"
-    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-    xmlns="https://getpsalm.org/schema/config"
-    xsi:schemaLocation="https://getpsalm.org/schema/config vendor/vimeo/psalm/config.xsd"
+        errorLevel="1"
+        strictBinaryOperands="true"
+        phpVersion="7.1"
+        allowStringToStandInForClass="true"
+        rememberPropertyAssignmentsAfterCall="false"
+        skipChecksOnUnresolvableIncludes="false"
+        checkForThrowsDocblock="true"
+        checkForThrowsInGlobalScope="true"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xmlns="https://getpsalm.org/schema/config"
+        xsi:schemaLocation="https://getpsalm.org/schema/config vendor/vimeo/psalm/config.xsd"
 >
     <projectFiles>
-        <directory name="src" />
+        <directory name="src"/>
         <ignoreFiles>
-            <directory name="vendor" />
-            <directory name="tests" />
+            <directory name="vendor"/>
+            <directory name="tests"/>
         </ignoreFiles>
     </projectFiles>
 </psalm>
