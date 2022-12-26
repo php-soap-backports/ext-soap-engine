@@ -12,7 +12,14 @@ use SoapClient;
 
 final class AbusedClient extends SoapClient
 {
+    /**
+     * @var SoapRequest|null
+     */
     private $storedRequest = null;
+
+    /**
+     * @var SoapResponse|null
+     */
     private $storedResponse = null;
 
     // @codingStandardsIgnoreStart
@@ -31,6 +38,7 @@ final class AbusedClient extends SoapClient
      * @var string
      */
     protected $__last_response = '';
+
     // @codingStandardsIgnoreEnd
 
     public function __construct(?string $wsdl, array $options = [])
@@ -44,6 +52,14 @@ final class AbusedClient extends SoapClient
         return new self($options->getWsdl(), $options->getOptions());
     }
 
+    /**
+     * @param string $request
+     * @param string $location
+     * @param string $action
+     * @param int $version
+     * @param int|bool $one_way
+     * @return string
+     */
     public function __doRequest(
         $request,
         $location,
@@ -51,7 +67,7 @@ final class AbusedClient extends SoapClient
         $version,
         $one_way = 0
     ): string {
-        $this->storedRequest = new SoapRequest((string) $request, (string) $location, (string) $action, (int) $version, (bool) $one_way);
+        $this->storedRequest = new SoapRequest($request, $location, $action, $version, (bool)$one_way);
 
         return $this->storedResponse ? $this->storedResponse->getPayload() : '';
     }
@@ -69,9 +85,10 @@ final class AbusedClient extends SoapClient
             $oneWay = (int)$oneWay;
         }
 
-        $this->__last_response = (string) ExtSoapErrorHandler::handleNullResponse(
+        $this->__last_response = (string)ExtSoapErrorHandler::handleNullResponse(
             ExtSoapErrorHandler::handleInternalErrors(
-                function() use ($request, $location, $action, $version, $oneWay): ?string {
+                function () use ($request, $location, $action, $version, $oneWay): ?string {
+                    /** @psalm-suppress InvalidScalarArgument */
                     return parent::__doRequest($request, $location, $action, $version, $oneWay);
                 }
             )
@@ -100,12 +117,12 @@ final class AbusedClient extends SoapClient
         $this->storedResponse = null;
     }
 
-    public function __getLastRequest() : string
+    public function __getLastRequest(): string
     {
         return $this->__last_request;
     }
 
-    public function __getLastResponse() : string
+    public function __getLastResponse(): string
     {
         return $this->__last_response;
     }
