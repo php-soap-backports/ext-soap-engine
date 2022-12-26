@@ -1,13 +1,12 @@
 <?xml version="1.0"?>
 <psalm
-        errorLevel="1"
+        errorLevel="2"
+        resolveFromConfigFile="true"
         strictBinaryOperands="true"
         phpVersion="7.1"
         allowStringToStandInForClass="true"
         rememberPropertyAssignmentsAfterCall="false"
         skipChecksOnUnresolvableIncludes="false"
-        checkForThrowsDocblock="true"
-        checkForThrowsInGlobalScope="true"
         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
         xmlns="https://getpsalm.org/schema/config"
         xsi:schemaLocation="https://getpsalm.org/schema/config vendor/vimeo/psalm/config.xsd"
@@ -19,4 +18,12 @@
             <directory name="tests"/>
         </ignoreFiles>
     </projectFiles>
+
+    <issueHandlers>
+        <UndefinedFunction>
+            <errorLevel type="suppress">
+                <referencedFunction name="get_debug_type" />
+            </errorLevel>
+        </UndefinedFunction>
+    </issueHandlers>
 </psalm>
