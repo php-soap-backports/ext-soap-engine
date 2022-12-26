@@ -70,12 +70,12 @@ final class ExtSoapOptionsResolverFactory
             // Levels 0-9 Specify GZIP compression
             // @see: https://bugs.php.net/bug.php?id=36283
             return $value >= 0
-                   && $value <= (
-                       SOAP_COMPRESSION_ACCEPT
-                       | SOAP_COMPRESSION_DEFLATE
-                       | SOAP_COMPRESSION_GZIP
-                       | 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 9
-                   );
+                && $value <= (
+                    SOAP_COMPRESSION_ACCEPT
+                    | SOAP_COMPRESSION_DEFLATE
+                    | SOAP_COMPRESSION_GZIP
+                    | 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 9
+                );
         });
 
         // Encoding
@@ -89,19 +89,25 @@ final class ExtSoapOptionsResolverFactory
         // Classmaps
         $resolver->setDefault('classmap', new ClassMapCollection());
         $resolver->setAllowedTypes('classmap', [ClassMapCollection::class, 'array']);
-        $resolver->setNormalizer('classmap', static function (Options $options, $value): array {
-            // Classic array configuration:
-            if (!$value instanceof ClassMapCollection) {
-                return $value;
-            }
+        $resolver->setNormalizer('classmap',
+            /**
+             * @param Options $options
+             * @param mixed $value
+             * @return array
+             */
+            static function (Options $options, $value): array {
+                // Classic array configuration:
+                if (!$value instanceof ClassMapCollection) {
+                    return $value;
+                }
 
-            return array_map(
-                static function (ClassMap $classMap) {
-                    return $classMap->getPhpClassName();
-                },
-                iterator_to_array($value)
-            );
-        });
+                return array_map(
+                    static function (ClassMap $classMap) {
+                        return $classMap->getPhpClassName();
+                    },
+                    iterator_to_array($value)
+                );
+            });
 
         // Exceptions
         $resolver->setDefault('exceptions', true);
@@ -118,50 +124,66 @@ final class ExtSoapOptionsResolverFactory
 
         $resolver->setDefined(['typemap']);
         $resolver->setAllowedTypes('typemap', ['array', TypeConverterCollection::class]);
-        $resolver->setNormalizer('typemap', static function (Options $options, $value): array {
-            // Classic array configuration:
-            if (!$value instanceof TypeConverterCollection) {
-                return $value;
-            }
+        $resolver->setNormalizer('typemap',
+            /**
+             * @param Options $options
+             * @param mixed $value
+             * @return array
+             */
+            static function (Options $options, $value): array {
+                // Classic array configuration:
+                if (!$value instanceof TypeConverterCollection) {
+                    return $value;
+                }
 
-            return array_values(array_map(
-                static function (TypeConverterInterface $converter) {
-                    return [
-                        'type_name' => $converter->getTypeName(),
-                        'type_ns' => $converter->getTypeNamespace(),
-                        'from_xml' => static function ($input) use ($converter) {
-                            $value = '';
+                return array_values(array_map(
+                    static function (TypeConverterInterface $converter) {
+                        return [
+                            'type_name' => $converter->getTypeName(),
+                            'type_ns' => $converter->getTypeNamespace(),
+                            'from_xml' =>
+                            /**
+                             * @param mixed $input
+                             * @return mixed
+                             */
+                                static function ($input) use ($converter) {
+                                    $value = '';
 
-                            if ('' !== $input && is_string($input)) {
-                                $value = $input;
-                            }
+                                    if ('' !== $input && is_string($input)) {
+                                        $value = $input;
+                                    }
 
-                            if (is_int($input)) {
-                                $value = (string)$input;
-                            }
+                                    if (is_int($input)) {
+                                        $value = (string)$input;
+                                    }
 
-                            if ($input instanceof Stringable) {
-                                $str = (string)$input;
-                                if ('' !== $str) {
-                                    $value = $str;
-                                }
-                            }
+                                    if ($input instanceof Stringable) {
+                                        $str = (string)$input;
+                                        if ('' !== $str) {
+                                            $value = $str;
+                                        }
+                                    }
 
-                            if ('' === $value) {
-                                throw new \Exception(sprintf('Could not set "%s" as type string.',
-                                    get_debug_type($value)));
-                            }
+                                    if ('' === $value) {
+                                        throw new \Exception(sprintf('Could not set "%s" as type string.',
+                                            // @psalm-suppress UndefinedFunction
+                                            get_debug_type($value)));
+                                    }
 
-                            return $converter->convertXmlToPhp($value);
-                        },
-                        'to_xml' => static function ($input) use ($converter): string {
-                            return $converter->convertPhpToXml($input);
-                        },
-                    ];
-                },
-                iterator_to_array($value)
-            ));
-        });
+                                    return $converter->convertXmlToPhp($value);
+                                },
+                            'to_xml' =>
+                            /**
+                             * @param mixed $input
+                             */
+                                static function ($input) use ($converter): string {
+                                    return $converter->convertPhpToXml($input);
+                                },
+                        ];
+                    },
+                    iterator_to_array($value)
+                ));
+            });
 
         // WSDL Caching
         $resolver->setDefault('cache_wsdl', WSDL_CACHE_NONE);
@@ -186,7 +208,7 @@ final class ExtSoapOptionsResolverFactory
         $resolver->setAllowedTypes('features', ['int']);
         $resolver->setAllowedValues('features', static function (int $value): bool {
             return $value >= 0
-               && $value <= (SOAP_SINGLE_ELEMENT_ARRAYS | SOAP_USE_XSI_ARRAY_TYPE | SOAP_WAIT_ONE_WAY_CALLS);
+                && $value <= (SOAP_SINGLE_ELEMENT_ARRAYS | SOAP_USE_XSI_ARRAY_TYPE | SOAP_WAIT_ONE_WAY_CALLS);
         });
 
         // Keep alive
