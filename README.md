@@ -1,6 +1,6 @@
 # Ext-SOAP powered SOAP engine
 
-This package is a [SOAP engine](https://github.com/php-soap/engine) that leverages the built-in functions from  PHP's `ext-soap` extension.
+This package is a [SOAP engine backport](https://github.com/php-soap-backport/engine) that leverages the built-in functions from  PHP's `ext-soap` extension compatible for php 7.1.
 
 It basically flips the `SoapClient` inside out: All the built-in functions for encoding, decoding and HTTP transport can be used in a standalone way.
 
@@ -14,17 +14,15 @@ If your package contains a `SoapClient`, you might consider using this package a
 
 # Want to help out? 💚
 
-- [Become a Sponsor](https://github.com/php-soap/.github/blob/main/HELPING_OUT.md#sponsor)
-- [Let us do your implementation](https://github.com/php-soap/.github/blob/main/HELPING_OUT.md#let-us-do-your-implementation)
-- [Contribute](https://github.com/php-soap/.github/blob/main/HELPING_OUT.md#contribute)
-- [Help maintain these packages](https://github.com/php-soap/.github/blob/main/HELPING_OUT.md#maintain)
-
-Want more information about the future of this project? Check out this list of the [next big projects](https://github.com/php-soap/.github/blob/main/PROJECTS.md) we'll be working on.
+- [Become a Sponsor of Project author](https://github.com/php-soap/.github/blob/main/HELPING_OUT.md#sponsor)
+- [Become a Sponsor of Backport author](https://github.com/php-soap-backports/.github/blob/main/HELPING_OUT.md#sponsor)
+- [Contribute to project](https://github.com/php-soap/.github/blob/main/HELPING_OUT.md#contribute)
+- [Contribute to backport project](https://github.com/php-soap-backports/.github/blob/main/HELPING_OUT.md#contribute)
 
 # Installation
 
 ```shell
-composer install php-soap/ext-soap-engine
+composer install php-soap-backports/ext-soap-engine
 ```
 
 ## Example usage:
@@ -103,11 +101,6 @@ This package provides following engine components:
 * **ExtSoapServerTransport:** Uses PHP's `SoapServer` to handle SOAP requests. It can e.g. be used during Unit tests.
 * **TraceableTransport:** Can be used to decorate another transport and keeps track of the last request and response. It should be used as an alternative for fetching it on the SoapClient.
 
-In ext-soap, there are some well known issues regarding the HTTP layer.
-Therefore we recommend using the [PSR-18 based transport](https://github.com/php-soap/psr18-transport/) instead of the ones above.
-Besides dealing with some issues, it also provides a set of middleware for dealing with some common issues you might not be able to solve with the regular SoapClient.
-
-
 ## Configuration options
 
 ### ExtSoapOptions
@@ -116,135 +109,6 @@ This package provides a little wrapper around all available `\SoapClient` [optio
 It provides sensible default options. If you want to set specific options, you can do so in a sane way:
 It will validate the options before they are passed to the `\SoapClient`.
 This way, you'll spend less time browsing the official PHP documentation.
-
-```php
-<?php
-
-use Soap\ExtSoapEngine\ExtSoapOptions;
-use Soap\ExtSoapEngine\Wsdl\Naming\Md5Strategy;use Soap\ExtSoapEngine\Wsdl\TemporaryWsdlLoaderProvider;
-use Soap\Psr18Transport\Wsdl\Psr18Loader;
-use Soap\Wsdl\Loader\FlatteningLoader;
-
-$options = ExtSoapOptions::defaults($wsdl, ['location' => 'http://somedifferentserver.com'])
-    ->disableWsdlCache()
-    ->withClassMap(\MyClassMap::getCollection())
-    ->withWsdlProvider(new TemporaryWsdlLoaderProvider(
-        new FlatteningLoader(new Psr18Loader($httpClient)),
-        new Md5Strategy(),
-        'some/dir'
-    ));
-
-$typemap = $options->getTypeMap();
-$typemap->add(new \MyTypeConverter());
-```
-
-### WsdlProvider
-
-A WSDL provider can be used in order to load a WSDL.
-Since ext-soap requires a loadable URL, it works slightly different from the [wsdl loaders inside php-soap/wsdl](https://github.com/php-soap/wsdl#wsdl-loader).
-
-```php
-use Soap\ExtSoapEngine\ExtSoapOptions;
-
-$options = ExtSoapOptions::defaults($wsdl)
-    ->withWsdlProvider($yourProvider);
-```
-
-This package contains some built-in providers:
-
-#### InMemoryWsdlProvider
-
-By using the in-memory WSDL provider, you can use a complete XML version of the WSDL as source.
-This one might come in handy during tests, but probably shouldn't be used in production.
-
-```php
-<?php
-use Soap\ExtSoapEngine\Wsdl\InMemoryWsdlProvider;
-
-$provider = new InMemoryWsdlProvider();
-$wsdl = ($provider)('<definitions ..... />');
-```
-
-#### PassThroughWsdlProvider
-
-The pass-through WSDL provider is used by default.
-You can pass every string you would normally pass to the built-in SOAP client's wsdl option.
-No additional checks are executed, the loading of the file will be handled by the internal `SoapClient` class.
-
-```php
-<?php
-use Soap\ExtSoapEngine\Wsdl\PassThroughWsdlProvider;
-
-$provider = new PassThroughWsdlProvider();
-$wsdl = ($provider)('some.wsdl');
-```
-
-#### PermanentWsdlLoaderProvider
-
-This provider can permanently cache a (remote) WSDL.
-This one is very useful to use in production, where the WSDL shouldn't change too much.
-You can force it to load to a permanent location in e.g. a cronjob.
-It will improve performance since the soap-client won't have to fetch the WSDL remotely.
-You can use any [WSDL loader](https://github.com/php-soap/wsdl#wsdl-loader)
-
-```php
-<?php
-use Soap\ExtSoapEngine\Wsdl\Naming\Md5Strategy;
-use Soap\ExtSoapEngine\Wsdl\PermanentWsdlLoaderProvider;
-use Soap\Wsdl\Loader\FlatteningLoader;
-use Soap\Wsdl\Loader\StreamWrapperLoader;
-
-$provider = new PermanentWsdlLoaderProvider(
-    new FlatteningLoader(new StreamWrapperLoader()),
-    new Md5Strategy(),
-    'target/location'
-);
-
-// Force downloads:
-$provider = $provider->forceDownload();
-
-$wsdl = ($provider)('some.wsdl');
-```
-
-#### TemporaryWsdlLoaderProvider
-
-This provider can temporarily fetch a (remote) WSDL through a WSDL loader.
-This one can be used in development, where WSDL files might change frequently.
-You can use any [WSDL loader](https://github.com/php-soap/wsdl#wsdl-loader)
-
-```php
-<?php
-use Soap\ExtSoapEngine\Wsdl\Naming\Md5Strategy;
-use Soap\ExtSoapEngine\Wsdl\TemporaryWsdlLoaderProvider;
-use Soap\Wsdl\Loader\FlatteningLoader;
-use Soap\Wsdl\Loader\StreamWrapperLoader;
-
-$provider = new TemporaryWsdlLoaderProvider(
-    new FlatteningLoader(new StreamWrapperLoader()),
-    new Md5Strategy(),
-    'target/location'
-);
-
-$wsdl = ($provider)('some.wsdl');
-```
-
-#### Writing your own WSDL provider
-
-Didn't find the WSDL provider you needed?
-No worries! It is very easy to create your own WSDL provider. The only thing you'll need to do is implement the `WsdlProvider` interface:
-
-```php
-namespace Soap\ExtSoapEngine\Wsdl;
-
-interface WsdlProvider
-{
-    /**
-     * This method can be used to transform a location into another location.
-     * The output needs to be processable by the SoapClient $wsdl option.
-     */
-    public function __invoke(string $location): string;
-}
-```
 
 ### ClassMap
 
