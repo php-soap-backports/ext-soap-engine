@@ -11,6 +11,9 @@ use Soap\ExtSoapEngine\Wsdl\Naming\NamingStrategy;
 
 final class PermanentWsdlLoaderProvider implements WsdlProvider
 {
+    /**
+     * @var bool
+     */
     private $downloadForced = false;
 
     private $loader;
