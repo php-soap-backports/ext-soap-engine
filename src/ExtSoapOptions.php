@@ -13,8 +13,19 @@ use Soap\ExtSoapEngine\Wsdl\WsdlProvider;
 
 final class ExtSoapOptions
 {
+    /**
+     * @var string
+     */
     private $wsdl;
+
+    /**
+     * @var array
+     */
     private $options;
+
+    /**
+     * @var WsdlProvider
+     */
     private $wsdlProvider;
 
     public function __construct(string $wsdl, array $options = [])
