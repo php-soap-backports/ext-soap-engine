@@ -6,6 +6,7 @@ namespace Soap\ExtSoapEngine\ErrorHandling;
 use Soap\ExtSoapEngine\Exception\RequestException;
 
 /**
+ * @internal
  * @psalm-internal Soap\ExtSoapEngine
  */
 final class ExtSoapErrorHandler
