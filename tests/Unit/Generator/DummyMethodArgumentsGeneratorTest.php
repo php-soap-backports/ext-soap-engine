@@ -22,7 +22,7 @@ final class DummyMethodArgumentsGeneratorTest extends TestCase
                     'method',
                     new ParameterCollection(
                         new Parameter('param1', XsdType::create('string')),
-                        new Parameter('param1', XsdType::create('integer')),
+                        new Parameter('param1', XsdType::create('integer'))
                     ),
                     XsdType::create('string')
                 )
