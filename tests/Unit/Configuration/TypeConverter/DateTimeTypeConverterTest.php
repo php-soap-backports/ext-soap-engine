@@ -4,7 +4,6 @@ declare(strict_types=1);
 namespace SoapTest\ExtSoapEngine\Unit\Configuration\TypeConverter;
 
 use DateTimeImmutable;
-use DateTimeInterface;
 use PHPUnit\Framework\TestCase;
 use Soap\ExtSoapEngine\Configuration\TypeConverter\DateTimeTypeConverter;
 

@@ -7,7 +7,6 @@ namespace SoapTest\ExtSoapEngine\Functional\ExtSoap\Encoding;
 use DOMDocument;
 use Exception;
 use Soap\Engine\SimpleEngine;
-use Soap\ExtSoapEngine\ExtSoapDriver;
 use Soap\ExtSoapEngine\Transport\TraceableTransport;
 use SoapTest\ExtSoapEngine\Functional\ExtSoap\AbstractSoapTestCase;
 

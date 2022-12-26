@@ -8,7 +8,6 @@ use DOMDocument;
 use Soap\Engine\SimpleEngine;
 use Soap\ExtSoapEngine\Configuration\ClassMap\ClassMap;
 use Soap\ExtSoapEngine\Configuration\ClassMap\ClassMapCollection;
-use Soap\ExtSoapEngine\ExtSoapDriver;
 use Soap\ExtSoapEngine\Transport\TraceableTransport;
 use SoapTest\ExtSoapEngine\Functional\ExtSoap\AbstractSoapTestCase;
 
@@ -48,14 +47,14 @@ final class DuplicateTypenamesTest extends AbstractSoapTestCase
 
         static::assertEquals($store1->getName(), 'Store');
         $arStore1 = [];
-        foreach ($store1->getProperties() as $property){
+        foreach ($store1->getProperties() as $property) {
             $arStore1[] = $property;
         }
         static::assertEquals($arStore1[0]->getName(), 'Attribute1');
 
         static::assertEquals($store2->getName(), 'Store');
         $arStore2 = [];
-        foreach ($store2->getProperties() as $property){
+        foreach ($store2->getProperties() as $property) {
             $arStore2[] = $property;
         }
         static::assertEquals($arStore2[0]->getName(), 'Attribute2');

@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Soap\ExtSoapEngine;
 
+use Exception;
 use Soap\ExtSoapEngine\Configuration\ClassMap\ClassMap;
 use Soap\ExtSoapEngine\Configuration\ClassMap\ClassMapCollection;
 use Soap\ExtSoapEngine\Configuration\TypeConverter\TypeConverterCollection;
@@ -89,11 +90,10 @@ final class ExtSoapOptionsResolverFactory
         // Classmaps
         $resolver->setDefault('classmap', new ClassMapCollection());
         $resolver->setAllowedTypes('classmap', [ClassMapCollection::class, 'array']);
-        $resolver->setNormalizer('classmap',
+        $resolver->setNormalizer(
+            'classmap',
             /**
-             * @param Options $options
              * @param mixed $value
-             * @return array
              */
             static function (Options $options, $value): array {
                 // Classic array configuration:
@@ -107,7 +107,8 @@ final class ExtSoapOptionsResolverFactory
                     },
                     iterator_to_array($value)
                 );
-            });
+            }
+        );
 
         // Exceptions
         $resolver->setDefault('exceptions', true);
@@ -124,11 +125,10 @@ final class ExtSoapOptionsResolverFactory
 
         $resolver->setDefined(['typemap']);
         $resolver->setAllowedTypes('typemap', ['array', TypeConverterCollection::class]);
-        $resolver->setNormalizer('typemap',
+        $resolver->setNormalizer(
+            'typemap',
             /**
-             * @param Options $options
              * @param mixed $value
-             * @return array
              */
             static function (Options $options, $value): array {
                 // Classic array configuration:
@@ -165,9 +165,11 @@ final class ExtSoapOptionsResolverFactory
                                     }
 
                                     if ('' === $value) {
-                                        throw new \Exception(sprintf('Could not set "%s" as type string.',
+                                        throw new Exception(sprintf(
+                                            'Could not set "%s" as type string.',
                                             // @psalm-suppress UndefinedFunction
-                                            get_debug_type($value)));
+                                            get_debug_type($value)
+                                        ));
                                     }
 
                                     return $converter->convertXmlToPhp($value);
@@ -183,7 +185,8 @@ final class ExtSoapOptionsResolverFactory
                     },
                     iterator_to_array($value)
                 ));
-            });
+            }
+        );
 
         // WSDL Caching
         $resolver->setDefault('cache_wsdl', WSDL_CACHE_NONE);

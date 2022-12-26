@@ -30,7 +30,7 @@ final class XsdTypesParserTest extends TestCase
         ]);
 
         $result = [];
-        foreach ($this->parser->parse($client) as $xsdType){
+        foreach ($this->parser->parse($client) as $xsdType) {
             $result[] = $xsdType;
         }
 

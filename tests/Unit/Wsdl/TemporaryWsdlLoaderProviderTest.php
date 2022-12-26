@@ -4,8 +4,8 @@ declare(strict_types=1);
 namespace SoapTest\ExtSoapEngine\Unit\Wsdl;
 
 use PHPUnit\Framework\TestCase;
-use Soap\ExtSoapEngine\Wsdl\TemporaryWsdlLoaderProvider;
 use Soap\ExtSoapEngine\Wsdl\Loader\WsdlLoaderInterface;
+use Soap\ExtSoapEngine\Wsdl\TemporaryWsdlLoaderProvider;
 
 final class TemporaryWsdlLoaderProviderTest extends TestCase
 {

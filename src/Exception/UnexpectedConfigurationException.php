@@ -9,8 +9,6 @@ use Soap\Engine\Exception\RuntimeException;
 final class UnexpectedConfigurationException extends RuntimeException
 {
     /**
-     * @param string $configurationKey
-     * @param string $expectedType
      * @param mixed $value
      * @return static
      */

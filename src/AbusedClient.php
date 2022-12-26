@@ -9,6 +9,7 @@ use Soap\Engine\HttpBinding\SoapResponse;
 use Soap\ExtSoapEngine\ErrorHandling\ExtSoapErrorHandler;
 use Soap\ExtSoapEngine\Exception\RequestException;
 use SoapClient;
+use const PHP_VERSION_ID;
 
 final class AbusedClient extends SoapClient
 {
@@ -58,7 +59,6 @@ final class AbusedClient extends SoapClient
      * @param string $action
      * @param int $version
      * @param int|bool $one_way
-     * @return string
      */
     public function __doRequest(
         $request,
@@ -81,7 +81,7 @@ final class AbusedClient extends SoapClient
     ): string {
         $this->__last_request = $request;
 
-        if (\PHP_VERSION_ID < 80000) {
+        if (PHP_VERSION_ID < 80000) {
             $oneWay = (int)$oneWay;
         }
 

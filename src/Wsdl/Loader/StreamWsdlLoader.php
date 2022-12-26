@@ -1,11 +1,11 @@
-<?php
+<?php declare(strict_types=1);
 
 namespace Soap\ExtSoapEngine\Wsdl\Loader;
 
 use Exception;
 use RuntimeException;
 
-class StreamWsdlLoader implements WsdlLoaderInterface
+final class StreamWsdlLoader implements WsdlLoaderInterface
 {
     /**
      * This must be a valid stream context.
