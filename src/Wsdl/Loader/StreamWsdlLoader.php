@@ -7,9 +7,16 @@ use RuntimeException;
 
 class StreamWsdlLoader implements WsdlLoaderInterface
 {
-
+    /**
+     * This must be a valid stream context.
+     *
+     * @var null|resource
+     */
     private $context;
 
+    /**
+     * @param null|resource $context
+     */
     public function __construct($context = null)
     {
         $this->context = $context;
